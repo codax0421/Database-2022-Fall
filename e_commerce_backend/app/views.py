@@ -54,13 +54,13 @@ def transactionBuyer_list(request,id):
 
 
     try:
-       transactions = Transaction.objects.get(buyer = id)
+       transactions = Transaction.objects.filter(buyer = id)
        
     except Product.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
-        serializer = TransactionSerializer(transactions)
+        serializer = TransactionSerializer(transactions, many = True)
         return Response({'data':serializer.data})
 
 @api_view(["GET"])
@@ -68,13 +68,13 @@ def transactionSeller_list(request,id):
 
 
     try:
-       transactions = Transaction.objects.get(seller = id)
+       transactions = Transaction.objects.filter(seller = id)
        
     except Product.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
-        serializer = TransactionSerializer(transactions)
+        serializer = TransactionSerializer(transactions, many = True)
         return Response({'data':serializer.data})
 
 
@@ -90,3 +90,5 @@ def product_comment_list(request,productid):
         
         serializer = ProductCommentSerializer(productComment, many = True)
         return Response({'data':serializer.data})
+
+

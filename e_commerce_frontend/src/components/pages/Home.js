@@ -12,13 +12,14 @@ const Home = () => {
   const navigate = useNavigate();
   useEffect(() => {
   axios.get('products/').then((res)=>{
+    console.log(res.data.data)
       setproductHome(res.data.data)
   })
   axios.get('tag/').then((res)=>{
         setTag(res.data.data)})
   
     axios.get('category/').then((res)=>{
-     console.log(res.data.data)
+
       setCategory(res.data.data)})
 
 },[])
@@ -54,8 +55,8 @@ const Home = () => {
              <Card style={{ width: "300px", margin:"10px"}} onClick={(e)=>navigateToProduct(e,product.id ,product.name)} value={product.id} key ={product.id}
              cover={
                <img
-                 alt="example"
-                 src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                 alt={product.alt}
+                 src={"http://127.0.0.1:8000/"+product.image}
                />
              }
              actions={[

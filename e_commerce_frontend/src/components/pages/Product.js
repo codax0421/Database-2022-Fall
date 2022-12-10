@@ -29,12 +29,13 @@ const Product = () =>{
   useEffect(() => {
     axios.get("/products/"+productid)
       .then((res) => {
+        console.log(res.data.data)
         setData(res.data.data)
       })
     
       axios.get("/products/comment/"+productid)
       .then((res)=>{
-          console.log(res.data.data)
+      
           setBComment(res.data.data)
       })
   
@@ -44,16 +45,17 @@ const Product = () =>{
     return(
 <div>
         <div style={{ display:' flex'}}>
-                        <div style={{width:"400px" ,height:"400px",backgroundColor:"orange" ,margin:"100px"}}>
+                        <div style={{width:"400px" ,height:"400px",backgroundColor:"orange" ,margin:"100px" ,backgroundImage:`url(http://127.0.0.1:8000/${data.image})`,  backgroundPosition: 'center',
+
+        backgroundRepeat: 'no-repeat',}}>
                             <Carousel autoplay  dots={true}  dotPosition={"bottom"}>
-                                <div>
-                                    <h1 style={{color:"white" ,lineHeight:"300px" , textAlign: 'center'}}>slide 1</h1>
-                                </div>
-                                <div>
-                                    <h1 style={{color:"white" ,lineHeight:"300px", textAlign: 'center'}}>slide 2</h1>
-                                </div>
-                                <div>
-                                    <h1 style={{color:"white" ,lineHeight:"300px", textAlign: 'center'}}>slide 3</h1>
+                                <div style={{backgroundImage:`url(http://127.0.0.1:8000/${data.image})`,  backgroundPosition: 'center',
+
+backgroundRepeat: 'no-repeat',}}> 
+
+                                    <h1 style={{color:"white" ,lineHeight:"300px" , textAlign: 'center' }}>a</h1>
+                             
+                                
                                 </div>
 
                             </Carousel>
