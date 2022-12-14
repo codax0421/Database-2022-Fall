@@ -2,23 +2,8 @@ import { Carousel, Descriptions, Button, Tag, Space, Avatar, List } from "antd";
 import { Route, Link, Routes, useLocation } from "react-router-dom";
 import React from "react";
 
-import axios from "./axios";
+import axios from "../../axios";
 import { useState, useEffect } from "react";
-
-const data1 = [
-  {
-    title: "Ant Design Title 1",
-  },
-  {
-    title: "Ant Design Title 2",
-  },
-  {
-    title: "Ant Design Title 3",
-  },
-  {
-    title: "Ant Design Title 4",
-  },
-];
 
 const Product = () => {
   const params = useLocation();

@@ -1,5 +1,5 @@
 import { Space, Table, Tag } from "antd";
-import axios from "./axios";
+import axios from "../../axios";
 import React, { useState, useEffect } from "react";
 const columns = [
   {

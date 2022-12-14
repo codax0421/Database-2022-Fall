@@ -6,7 +6,7 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import axios from "./axios";
+import axios from "../../axios";
 
 const { Meta } = Card;
 const Home = () => {
@@ -64,13 +64,15 @@ const Home = () => {
           return (
             <Card
               style={{ width: "300px", margin: "10px" }}
-              onClick={(e) => navigateToProduct(e, product.id, product.name)}
               value={product.id}
               key={product.id}
               cover={
                 <img
                   alt={product.alt}
                   src={"http://127.0.0.1:8000/" + product.image}
+                  onClick={(e) =>
+                    navigateToProduct(e, product.id, product.name)
+                  }
                 />
               }
               actions={[
