@@ -12,8 +12,8 @@ import React from "react";
 import SendIcon from "@mui/icons-material/Send";
 import Button from "@mui/material/Button";
 import axios from "../../axios";
-import { useState, useEffect } from "react";
-
+import { useState, useEffect, useContext } from "react";
+import AuthContext from "../../AuthProvider";
 const Product = () => {
   const params = useLocation();
   const [data, setData] = useState([]);
@@ -21,6 +21,7 @@ const Product = () => {
   const [newComment, setNewComment] = useState("");
   const productid = params.state.productId;
   const productname = params.state.productName;
+  const { profile } = useContext(AuthContext);
   useEffect(() => {
     axios.get("/products/" + productid).then((res) => {
       console.log(res.data.data);
@@ -30,13 +31,13 @@ const Product = () => {
     axios.get("/products/comment/" + productid).then((res) => {
       setBComment(res.data.data);
     });
-  }, []);
+  }, [Bcomment]);
   // console.log(Bcomment);
   const onClickSendComment = (product_id, postCommnet) => {
     console.log("newComment", newComment);
     axios
       .post("/newcomment/", {
-        user: 1,
+        user: profile.id,
         product: product_id,
         comment: postCommnet,
       })
@@ -46,12 +47,13 @@ const Product = () => {
       .catch(function (error) {
         console.log(error);
       });
+    setNewComment("");
   };
 
   const onClickWish = (product_id) => {
     axios
       .post("/addwishlist/", {
-        user: 1,
+        user: profile.id,
         product: product_id,
       })
       .then(function (response) {
@@ -65,7 +67,7 @@ const Product = () => {
   const onClickCart = (product_id) => {
     axios
       .post("/addcart/", {
-        user: 1,
+        user: profile.id,
         product: product_id,
       })
       .then(function (response) {

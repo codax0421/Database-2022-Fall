@@ -1,6 +1,8 @@
 import { Space, Table, Tag } from "antd";
 import axios from "../../axios";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import AuthContext from "../../AuthProvider";
+
 const columns = [
   {
     title: "Product",
@@ -23,12 +25,13 @@ const columns = [
 const Transaction = () => {
   const [BuyerTrans, setBuyerTrans] = useState([]);
   const [SellerTrans, setSellerTrans] = useState([]);
+  const { profile } = useContext(AuthContext);
   useEffect(() => {
-    axios.get("transactionBuyer/" + 1).then((res) => {
+    axios.get("transactionBuyer/" + profile.id).then((res) => {
       console.log(res.data.data);
       setBuyerTrans(res.data.data);
     });
-    axios.get("transactionSeller/" + 1).then((res) => {
+    axios.get("transactionSeller/" + profile.id).then((res) => {
       setSellerTrans(res.data.data);
     });
   }, []);

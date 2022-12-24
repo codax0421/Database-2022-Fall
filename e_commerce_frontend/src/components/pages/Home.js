@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Card } from "antd";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Routes, Route, useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import AuthContext from "../../AuthProvider";
 
 const { Meta } = Card;
 const Home = () => {
@@ -16,8 +17,10 @@ const Home = () => {
   const [category, setCategory] = useState([]);
   const [SearchTagValue, setSearchTagValue] = useState([]);
   const [SearchCategoryValue, setSearchCategoryValue] = useState([]);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
+  const { profile } = useContext(AuthContext);
+  console.log(profile);
   useEffect(() => {
     axios.get("products/").then((res) => {
       console.log(res.data.data);
@@ -63,7 +66,7 @@ const Home = () => {
   const onClickWish = (product_id) => {
     axios
       .post("/addwishlist/", {
-        user: 1,
+        user: profile.id,
         product: product_id,
       })
       .then(function (response) {
@@ -77,7 +80,7 @@ const Home = () => {
   const onClickCart = (product_id) => {
     axios
       .post("/addcart/", {
-        user: 1,
+        user: profile.id,
         product: product_id,
       })
       .then(function (response) {
