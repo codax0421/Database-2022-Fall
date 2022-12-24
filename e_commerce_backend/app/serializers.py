@@ -18,8 +18,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    tag = TagSerializer(read_only=True, many=True)
-
+    tag = TagSerializer(read_only=True, many=True),
+    cat = CategorySerializer(read_only=True, many=True),
     class Meta:
         model = Product
         fields = [
@@ -31,6 +31,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "description",
             "image",
             "tag",
+            
         ]
 
 

@@ -44,13 +44,27 @@ const Home = () => {
 
   const CategoryTagSearch = () => {
     console.log("search by", SearchCategoryValue, SearchTagValue);
+    axios
+      .post("/searchByGenres/", {
+        category: SearchCategoryValue,
+        tag: SearchTagValue,
+      })
+      .then((res) => {
+        console.log(res.data.data);
+        if (res.data.data) {
+          setproductHome(res.data.data);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
-  const onClickWish = () => {
+  const onClickWish = (product_id) => {
     axios
       .post("/addwishlist/", {
         user: 1,
-        product: 13,
+        product: product_id,
       })
       .then(function (response) {
         console.log(response);
@@ -60,7 +74,19 @@ const Home = () => {
       });
   };
 
-  const onClickCart = () => {};
+  const onClickCart = (product_id) => {
+    axios
+      .post("/addcart/", {
+        user: 1,
+        product: product_id,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   return (
     <>
@@ -142,8 +168,14 @@ const Home = () => {
                 />
               }
               actions={[
-                <HeartOutlined key="heart" onClick={onClickWish} />,
-                <ShoppingCartOutlined key="cart" onClick={onClickCart} />,
+                <HeartOutlined
+                  key="heart"
+                  onClick={(e) => onClickWish(product.id)}
+                />,
+                <ShoppingCartOutlined
+                  key="cart"
+                  onClick={(e) => onClickCart(product.id)}
+                />,
               ]}
             >
               <Meta title={product.name} description={product.description} />

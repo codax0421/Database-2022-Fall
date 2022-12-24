@@ -151,3 +151,47 @@ def add_comment(request):
             newComment = Product_Comment.objects.create(buyer=find_id, product=find_product,comment=aComment)
             newComment.save()
             return Response({'data': "saved"})
+
+
+@api_view(["POST"])
+def search_by_genres(request):
+
+    if request.method == "POST":
+        dataTag = request.data["tag"]
+        dataCat = request.data["category"]
+        resTag = [ sub["id"] for sub in  dataTag ]
+        resCat = [ sub["id"] for sub in  dataCat ]
+        # print(data)
+        print(resTag==True)
+        print(resCat== True)
+        # find_cat = Category.objects.filter(name=resCat)
+        # find_tag = Tag.objects.filter(name=resTag)
+
+        try:
+            if resTag == [] and resCat == []:
+                products = Product.objects.all()
+                serializer = ProductSerializer(products, many=True)
+                return Response({"data": serializer.data})
+              
+            elif resCat == []:
+                filterData = Product.objects.filter(tag__in = resTag)
+                serializer = ProductSerializer(filterData,many=True)
+                return Response({"data":serializer.data})
+            elif resTag == []:
+                filterData = Product.objects.filter(category__in= resCat)
+                serializer = ProductSerializer(filterData,many=True)
+                return Response({"data":serializer.data})
+            else:
+                filterData = Product.objects.filter(category__in= resCat,tag__in = resTag)
+                serializer = ProductSerializer(filterData,many=True)
+                return Response({"data":serializer.data})
+              
+
+        except Product.DoesNotExist:
+          return Response(status=status.HTTP_404_NOT_FOUND)
+
+      
+    
+
+        
+    

@@ -32,8 +32,48 @@ const Product = () => {
     });
   }, []);
   // console.log(Bcomment);
-  const onClickSendComment = () => {
+  const onClickSendComment = (product_id, postCommnet) => {
     console.log("newComment", newComment);
+    axios
+      .post("/newcomment/", {
+        user: 1,
+        product: product_id,
+        comment: postCommnet,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const onClickWish = (product_id) => {
+    axios
+      .post("/addwishlist/", {
+        user: 1,
+        product: product_id,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const onClickCart = (product_id) => {
+    axios
+      .post("/addcart/", {
+        user: 1,
+        product: product_id,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
   return (
     <div style={{ marginBottom: "40px" }}>
@@ -91,8 +131,10 @@ const Product = () => {
             <br></br>
           </div>
           <Space wrap style={{ marginLeft: "450px" }}>
-            <Button variant="contained">add to cart</Button>
-            <Button variant="contained">Buy</Button>
+            <Button variant="contained" onClick={(e) => onClickCart(productid)}>
+              add to cart
+            </Button>
+            {/* <Button variant="contained">Buy</Button> */}
           </Space>
         </div>
       </div>
@@ -144,7 +186,7 @@ const Product = () => {
                   marginLeft: "10px",
                 }}
                 variant="contained"
-                onClick={onClickSendComment}
+                onClick={(e) => onClickSendComment(productid, newComment)}
               >
                 Send
               </Button>

@@ -36,6 +36,7 @@ urlpatterns = [
     path("addwishlist/",views.add_to_wishlist),
     path("addcart/",views.add_to_cart),
     path("newcomment/",views.add_comment),
+    path("searchByGenres/",views.search_by_genres)
 ]
 
 
