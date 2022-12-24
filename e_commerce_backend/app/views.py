@@ -1,18 +1,15 @@
-from django.shortcuts import render
 from django.http import JsonResponse
-from .models import Product
-from .models import Transaction
-from .models import Product_Comment
-from .models import Tag
-from .models import Category
-from .serializers import ProductSerializer
-from .serializers import TransactionSerializer
-from .serializers import ProductCommentSerializer
-from .serializers import TagSerializer
-from .serializers import CategorySerializer
+from django.shortcuts import render
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
+
+from .models import (Cart, Category, Product, Product_Comment, Tag,
+                     Transaction, User, Wishlist)
+from .serializers import (CategorySerializer, ProductCommentSerializer,
+                          ProductSerializer, TagSerializer,
+                          TransactionSerializer, WishlistSerializer)
+
 # Create your views here.
 
 @api_view(["GET"])
@@ -32,7 +29,7 @@ def product_list(request):
     #get all the product serializer
     #serialize the data
     #return json
-    products = Product.objects.all()
+    products = Product.objects.filter(product_status="F")
     serializer = ProductSerializer(products , many = True)
     return Response({'data':serializer.data})
 
@@ -91,4 +88,51 @@ def product_comment_list(request,productid):
         serializer = ProductCommentSerializer(productComment, many = True)
         return Response({'data':serializer.data})
 
+@api_view(["POST" ])
+def add_to_wishlist(request):
+          if request.method == "POST":
+            find_id = User.objects.get(id=request.data["user"])
+            find_product = Product.objects.get(id = request.data["product"])
+            try :
+                addWish =  Wishlist.objects.get(user=find_id , product=find_product)
+            except Wishlist.DoesNotExist:
+                   serializer = Wishlist.objects.create(user=find_id, product=find_product)
+                   serializer.save()
+                   return Response({'data': "saved"})
 
+            return Response({'data': "already saved"})
+       
+@api_view(["POST" ])
+def add_to_cart(request):
+          if request.method == "POST":
+            find_id = User.objects.get(id=request.data["user"])
+            find_product = Product.objects.get(id = request.data["product"])
+            try :
+                addCart =  Cart.objects.get(user=find_id , product=find_product)
+            except Cart.DoesNotExist:
+                   serializer = Cart.objects.create(user=find_id, product=find_product)
+                   serializer.save()
+                   return Response({'data': "saved"})
+
+            return Response({'data': "already saved"})    
+
+
+@api_view(["POST"])
+def add_comment(request):
+    if request.method == "POST":
+            find_id = User.objects.get(id=request.data["user"])
+            find_product = Product.objects.get(id = request.data["product"])
+            aComment = request.data["comment"]
+            newComment = Product_Comment.objects.create(buyer=find_id, product=find_product,comment=aComment)
+            newComment.save()
+            return Response({'data': "saved"})
+
+
+        
+             
+
+
+            
+     
+      
+   

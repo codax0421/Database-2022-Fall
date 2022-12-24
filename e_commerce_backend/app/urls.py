@@ -27,7 +27,12 @@ urlpatterns = [
     path("transactionSeller/<int:id>",views.transactionSeller_list),
     path("products/comment/<int:productid>",views.product_comment_list),
     path("tag/" ,views.tag_list),
-    path("category/",views.category_list)
+    path("category/",views.category_list),
+    path("addwishlist/",views.add_to_wishlist),
+    path("addcart/",views.add_to_cart),
+    path("newcomment/",views.add_comment),
+
+    
 ]
 
 

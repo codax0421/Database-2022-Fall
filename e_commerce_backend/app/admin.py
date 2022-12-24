@@ -1,20 +1,12 @@
 from django.contrib import admin
 
-from .models import (
-    Cart,
-    Category,
-    Product,
-    Product_Comment,
-    Seller_Comment,
-    Tag,
-    Transaction,
-    Wishlist,
-)
+from .models import (Cart, Category, Product, Product_Comment, Seller_Comment,
+                     Tag, Transaction, Wishlist)
 
 
 # Register your models here.
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "seller", "category", "product_status", "price")
+    list_display = ("id","name", "seller", "category", "product_status", "price")
 
 
 class TransactionAdmin(admin.ModelAdmin):

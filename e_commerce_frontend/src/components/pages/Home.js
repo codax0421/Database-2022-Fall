@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Select, Space, Avatar, Card } from "antd";
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { Card } from "antd";
+import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "../../axios";
 import Chip from "@mui/material/Chip";
@@ -21,6 +17,7 @@ const Home = () => {
   const [SearchTagValue, setSearchTagValue] = useState([]);
   const [SearchCategoryValue, setSearchCategoryValue] = useState([]);
   const navigate = useNavigate();
+
   useEffect(() => {
     axios.get("products/").then((res) => {
       console.log(res.data.data);
@@ -29,7 +26,6 @@ const Home = () => {
     axios.get("tag/").then((res) => {
       setTag(res.data.data);
     });
-
     axios.get("category/").then((res) => {
       setCategory(res.data.data);
     });
@@ -49,25 +45,26 @@ const Home = () => {
   const CategoryTagSearch = () => {
     console.log("search by", SearchCategoryValue, SearchTagValue);
   };
+
+  const onClickWish = () => {
+    axios
+      .post("/addwishlist/", {
+        user: 1,
+        product: 13,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const onClickCart = () => {};
+
   return (
     <>
       <div style={{ display: "flex" }}>
-        {/* <Select
-          mode="multiple"
-          style={{ width: "10%", marginTop: "20px", marginLeft: "30px" }}
-          options={category.map((item) => ({
-            value: item.name,
-            label: item.name,
-          }))}
-        /> */}
-        {/* <Select
-          mode="multiple"
-          style={{ width: "10%", marginTop: "20px", marginLeft: "30px" }}
-          options={tag.map((item) => ({
-            value: item.name,
-            label: item.name,
-          }))}
-        /> */}
         <Autocomplete
           multiple
           id="fixed-tags-demo"
@@ -145,14 +142,11 @@ const Home = () => {
                 />
               }
               actions={[
-                <SettingOutlined key="setting" />,
-                <EditOutlined key="edit" />,
+                <HeartOutlined key="heart" onClick={onClickWish} />,
+                <ShoppingCartOutlined key="cart" onClick={onClickCart} />,
               ]}
             >
-              <Meta
-                title={product.name}
-                description={"$" + product.description}
-              />
+              <Meta title={product.name} description={product.description} />
             </Card>
           );
         })}

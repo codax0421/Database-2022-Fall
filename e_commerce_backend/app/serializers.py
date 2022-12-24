@@ -1,10 +1,18 @@
 from rest_framework import serializers
 
-from .models import Product, Tag, Transaction
+from .models import (Cart, Category, Product, Product_Comment, Tag,
+                     Transaction, Wishlist)
 
-from.models import Product_Comment
-from .models import Category
 
+class WishlistSerializer(serializers.ModelSerializer):
+    class Meta :
+        model = Wishlist 
+        fields =["id","user","product"] 
+
+class CartSerializer(serializers.ModelSerializer):
+    class Meta :
+        model = Cart
+        fields = ["id" , "user" , "product"]       
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta :
