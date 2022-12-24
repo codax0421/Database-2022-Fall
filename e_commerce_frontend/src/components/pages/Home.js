@@ -10,7 +10,6 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 
 const { Meta } = Card;
-const { Meta } = Card;
 const Home = () => {
   const [productHome, setproductHome] = useState([]);
   const [tag, setTag] = useState([]);

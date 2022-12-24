@@ -6,7 +6,8 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Category, Product, Product_Comment, Tag, Transaction
+from .models import (Cart, Category, Product, Product_Comment, Tag,
+                     Transaction, User, Wishlist)
 from .serializers import (CategorySerializer, ProductCommentSerializer,
                           ProductSerializer, RegisterSerializer, TagSerializer,
                           TransactionSerializer)
