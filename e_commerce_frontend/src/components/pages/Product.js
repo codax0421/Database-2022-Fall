@@ -31,51 +31,33 @@ const Product = () => {
     axios.get("/products/comment/" + productid).then((res) => {
       setBComment(res.data.data);
     });
-  }, [Bcomment]);
+  }, []);
   // console.log(Bcomment);
-  const onClickSendComment = (product_id, postCommnet) => {
+  const onClickSendComment = async (product_id, postCommnet) => {
     console.log("newComment", newComment);
-    axios
-      .post("/newcomment/", {
-        user: profile.id,
-        product: product_id,
-        comment: postCommnet,
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    let res = await axios.post("/newcomment/", {
+      user: profile.id,
+      product: product_id,
+      comment: postCommnet,
+    });
+
     setNewComment("");
   };
 
-  const onClickWish = (product_id) => {
-    axios
-      .post("/addwishlist/", {
-        user: profile.id,
-        product: product_id,
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-
-  const onClickCart = (product_id) => {
-    axios
-      .post("/addcart/", {
-        user: profile.id,
-        product: product_id,
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  const onClickCart = async (product_id) => {
+    if (profile.id == undefined) {
+      console.log("not a user");
+    } else {
+      let res = await axios
+        .post("/addcart/", {
+          user: profile.id,
+          product: product_id,
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      console.log(res.data);
+    }
   };
   return (
     <div style={{ marginBottom: "40px" }}>

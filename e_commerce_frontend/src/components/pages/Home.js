@@ -6,10 +6,9 @@ import axios from "../../axios";
 import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import AuthContext from "../../AuthProvider";
-
+import CardHome from "../Layout/Card";
 const { Meta } = Card;
 const Home = () => {
   const [productHome, setproductHome] = useState([]);
@@ -22,73 +21,40 @@ const Home = () => {
   const { profile } = useContext(AuthContext);
   console.log(profile);
   useEffect(() => {
-    axios.get("products/").then((res) => {
-      console.log(res.data.data);
+    const getProduct = async () => {
+      let res = await axios.get("products/");
       setproductHome(res.data.data);
-    });
-    axios.get("tag/").then((res) => {
+      console.log(res.data.data);
+    };
+    const getTag = async () => {
+      let res = await axios.get("tag/");
       setTag(res.data.data);
-    });
-    axios.get("category/").then((res) => {
+      console.log(res.data.data);
+    };
+
+    const getCat = async () => {
+      let res = await axios.get("category/");
       setCategory(res.data.data);
-    });
+      console.log(res.data.data);
+    };
+
+    getProduct();
+    getTag();
+    getCat();
   }, []);
 
-  const navigateToProduct = (e, id, name) => {
-    // 👇️ navigate to /contacts
-    console.log(name);
-    navigate("/product/" + id, {
-      state: {
-        productId: id,
-        productName: name,
-      },
-    });
-  };
-
-  const CategoryTagSearch = () => {
+  const CategoryTagSearch = async () => {
     console.log("search by", SearchCategoryValue, SearchTagValue);
-    axios
-      .post("/searchByGenres/", {
-        category: SearchCategoryValue,
-        tag: SearchTagValue,
-      })
-      .then((res) => {
-        console.log(res.data.data);
-        if (res.data.data) {
-          setproductHome(res.data.data);
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-
-  const onClickWish = (product_id) => {
-    axios
-      .post("/addwishlist/", {
-        user: profile.id,
-        product: product_id,
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-
-  const onClickCart = (product_id) => {
-    axios
-      .post("/addcart/", {
-        user: profile.id,
-        product: product_id,
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    let res = await axios.post("/searchByGenres/", {
+      category: SearchCategoryValue,
+      tag: SearchTagValue,
+    });
+    let data = res.data.data;
+    console.log(res.data.data);
+    if (data) {
+      setproductHome(data);
+      console.log(res.data.data);
+    }
   };
 
   return (
@@ -149,43 +115,7 @@ const Home = () => {
           Search By
         </Button>
       </div>
-      <div style={{ display: "flex", flexWrap: "wrap", margin: "70px" }}>
-        {productHome.map((product) => {
-          return (
-            <Card
-              style={{ width: "300px", margin: "10px" }}
-              value={product.id}
-              key={product.id}
-              cover={
-                <img
-                  style={{
-                    width: " 300px",
-                    height: "200px",
-                    objectFit: " cover",
-                  }}
-                  alt={product.alt}
-                  src={"http://127.0.0.1:8000/" + product.image}
-                  onClick={(e) =>
-                    navigateToProduct(e, product.id, product.name)
-                  }
-                />
-              }
-              actions={[
-                <HeartOutlined
-                  key="heart"
-                  onClick={(e) => onClickWish(product.id)}
-                />,
-                <ShoppingCartOutlined
-                  key="cart"
-                  onClick={(e) => onClickCart(product.id)}
-                />,
-              ]}
-            >
-              <Meta title={product.name} description={product.description} />
-            </Card>
-          );
-        })}
-      </div>
+      <CardHome productHome={productHome} />
     </>
   );
 };
