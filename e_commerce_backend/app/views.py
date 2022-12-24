@@ -148,7 +148,8 @@ def add_comment(request):
             find_id = User.objects.get(id=request.data["user"])
             find_product = Product.objects.get(id = request.data["product"])
             aComment = request.data["comment"]
-            newComment = Product_Comment.objects.create(buyer=find_id, product=find_product,comment=aComment)
+            aRating = request.data["rating"]
+            newComment = Product_Comment.objects.create(buyer=find_id, product=find_product,comment=aComment,rating = aRating)
             newComment.save()
             return Response({'data': "saved"})
 

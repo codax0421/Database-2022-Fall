@@ -16,25 +16,14 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = "__all__"
 
-
 class ProductSerializer(serializers.ModelSerializer):
-    tag = TagSerializer(read_only=True, many=True),
-    cat = CategorySerializer(read_only=True, many=True),
-    class Meta:
-        model = Product
-        fields = [
-            "id",
-            "name",
-            "seller",
-            "category",
-            "price",
-            "description",
-            "image",
-            "tag",
+    tag = TagSerializer(read_only=True, many=True)
+    category = CategorySerializer()
+
+    class Meta :
+            model = Product
+            fields =  ['id' , 'name' , 'seller' , 'category' ,  'price' ,'description' ,'image' ,'tag']
             
-        ]
-
-
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
@@ -44,7 +33,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 class ProductCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product_Comment
-        fields = ["id", "buyer", "comment"]
+        fields = ["id", "buyer", "comment","rating"]
 
 
 class RegisterSerializer(serializers.ModelSerializer):

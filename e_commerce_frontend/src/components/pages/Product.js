@@ -14,38 +14,52 @@ import Button from "@mui/material/Button";
 import axios from "../../axios";
 import { useState, useEffect, useContext } from "react";
 import AuthContext from "../../AuthProvider";
+import Rating from "@mui/material/Rating";
 const Product = () => {
   const params = useLocation();
   const [data, setData] = useState([]);
   const [Bcomment, setBComment] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [value, setValue] = useState([]);
   const productid = params.state.productId;
   const productname = params.state.productName;
   const { profile } = useContext(AuthContext);
+  const [ControlValue, setControlValue] = useState("");
+
   useEffect(() => {
-    axios.get("/products/" + productid).then((res) => {
+    const getPid = async () => {
+      let res = await axios.get("/products/" + productid);
       console.log(res.data.data);
       setData(res.data.data);
-    });
+    };
 
-    axios.get("/products/comment/" + productid).then((res) => {
+    const getChatRec = async () => {
+      let res = await axios.get("/products/comment/" + productid);
+      console.log(res.data.data);
       setBComment(res.data.data);
-    });
-  }, []);
+    };
+    getPid();
+    getChatRec();
+  }, [ControlValue]);
   // console.log(Bcomment);
   const onClickSendComment = async (product_id, postCommnet) => {
-    console.log("newComment", newComment);
-    let res = await axios.post("/newcomment/", {
-      user: profile.id,
-      product: product_id,
-      comment: postCommnet,
-    });
-
-    setNewComment("");
+    if (profile.id === undefined) {
+      console.log("not a user");
+    } else {
+      console.log("newComment", newComment);
+      let res = await axios.post("/newcomment/", {
+        user: profile.id,
+        product: product_id,
+        comment: postCommnet,
+        rating: value,
+      });
+      setControlValue(postCommnet);
+      setNewComment("");
+    }
   };
 
   const onClickCart = async (product_id) => {
-    if (profile.id == undefined) {
+    if (profile.id === undefined) {
       console.log("not a user");
     } else {
       let res = await axios
@@ -84,14 +98,10 @@ const Product = () => {
             ></div>
           </Carousel>
           <div style={{ marginTop: "380px" }}>
-            {data.tag?.map((allTag) => {
+            {data.tag?.map((allTag, index) => {
               return (
-                <Tag
-                  color="magenta"
-                  style={{ marginTop: "20px" }}
-                  key={allTag.id}
-                >
-                  {allTag.name}{" "}
+                <Tag color="magenta" style={{ marginTop: "20px" }} key={index}>
+                  {allTag.name}
                 </Tag>
               );
             })}
@@ -123,7 +133,7 @@ const Product = () => {
         </div>
       </div>
 
-      <div style={{ marginLeft: "80px" }}>
+      <div style={{ marginLeft: "80px", marginTop: "100px" }}>
         <List
           sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
         >
@@ -149,6 +159,12 @@ const Product = () => {
                     }
                   />
                 </ListItem>
+                <Rating
+                  name="read-only"
+                  style={{ marginLeft: "70px" }}
+                  value={itemComment.rating}
+                  readOnly
+                />
                 <Divider variant="inset" component="li" />
               </div>
             );
@@ -178,6 +194,14 @@ const Product = () => {
           }}
         />
       </div>
+      <Rating
+        style={{ marginLeft: "140px" }}
+        name="simple-controlled"
+        value={value}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+        }}
+      />
     </div>
   );
 };
