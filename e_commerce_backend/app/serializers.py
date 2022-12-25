@@ -1,8 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers, validators
 
-from .models import (Cart, Category, Product, Product_Comment, Tag,
-                     Transaction, Wishlist)
+from .models import Cart, Category, Product, Product_Comment, Tag, Transaction, Wishlist
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -16,14 +15,25 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = "__all__"
 
+
 class ProductSerializer(serializers.ModelSerializer):
     tag = TagSerializer(read_only=True, many=True)
     category = CategorySerializer()
 
-    class Meta :
-            model = Product
-            fields =  ['id' , 'name' , 'seller' , 'category' ,  'price' ,'description' ,'image' ,'tag']
-            
+    class Meta:
+        model = Product
+        fields = [
+            "id",
+            "name",
+            "seller",
+            "category",
+            "price",
+            "description",
+            "image",
+            "tag",
+        ]
+
+
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
@@ -33,7 +43,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 class ProductCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product_Comment
-        fields = ["id", "buyer", "comment","rating"]
+        fields = ["id", "buyer", "comment", "rating"]
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -61,20 +71,20 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
         return user
 
+
 class WishlistSerializer(serializers.ModelSerializer):
-    class Meta :
-        model = Wishlist 
-        fields =["id","user","product"] 
+    class Meta:
+        model = Wishlist
+        fields = ["id", "user", "product"]
+
 
 class CartSerializer(serializers.ModelSerializer):
-    class Meta :
+    class Meta:
         model = Cart
-        fields = ["id" , "user" , "product"]   
+        fields = ["id", "user", "product"]
+
 
 class CartSerializer(serializers.ModelSerializer):
-    class Meta :
+    class Meta:
         model = Cart
-        fields = ["id" , "user" , "product"]    
-
-
-
+        fields = ["id", "user", "product"]
