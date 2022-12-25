@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers, validators
 
-from .models import Cart, Category, Product, Product_Comment, Tag, Transaction, Wishlist
+from .models import (Cart, Category, Product, Product_Comment, Tag,
+                     Transaction, Wishlist)
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -92,16 +93,12 @@ class RegisterSerializer(serializers.ModelSerializer):
 class WishlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wishlist
-        fields = ["id", "user", "product"]
+        fields ="__all__"
 
 
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
-        fields = ["id", "user", "product"]
+        fields ="__all__"
 
 
-class CartSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Cart
-        fields = ["id", "user", "product"]

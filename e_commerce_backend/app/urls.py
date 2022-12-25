@@ -37,6 +37,8 @@ urlpatterns = [
     path("newcomment/", views.add_comment),
     path("searchByGenres/", views.search_by_genres),
     path("search/", views.search),
+    path("wishlist/<int:userid>", views.get_wishlist),
+    path("cart/<int:userid>", views.get_wishlist),
 ]
 
 

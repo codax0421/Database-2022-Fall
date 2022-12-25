@@ -7,9 +7,10 @@ from rest_framework.response import Response
 
 from .models import (Cart, Category, Product, Product_Comment, Tag,
                      Transaction, User, Wishlist)
-from .serializers import (CategorySerializer, ProductCommentSerializer,
-                          ProductSerializer, RegisterSerializer, TagSerializer,
-                          TransactionSerializer)
+from .serializers import (CartSerializer, CategorySerializer,
+                          ProductCommentSerializer, ProductSerializer,
+                          RegisterSerializer, TagSerializer,
+                          TransactionSerializer, WishlistSerializer)
 
 
 @api_view(["GET"])
@@ -210,14 +211,28 @@ def search(request):
 
 @api_view(["GET"])
 def get_wishlist(request, userid):
-
+    print(userid)
     if request.method == "GET":
         find_user = User.objects.get(id=userid)
         try:
-            product = Wishlist.objects.get(user=find_user)
+            wishlist = Wishlist.objects.filter(user = find_user)
 
-        except Product.DoesNotExist:
+        except Wishlist.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        serializer = ProductSerializer(product)
+        serializer = WishlistSerializer(wishlist, many=True)
+        return Response({"data": serializer.data})
+
+@api_view(["GET"])
+def get_cart(request, userid):
+    print(userid)
+    if request.method == "GET":
+        find_user = User.objects.get(id=userid)
+        try:
+            cart =Cart.objects.filter(user = find_user)
+
+        except Cart.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = WishlistSerializer(cart, many=True)
         return Response({"data": serializer.data})
