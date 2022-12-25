@@ -64,8 +64,9 @@ const CardProduct = ({ products }) => {
             cover={
               <img
                 style={{
-                  width: "100%",
-                  height: "100%",
+                  width: " 300px",
+                  height: "200px",
+                  objectFit: " cover",
                 }}
                 alt={product.alt}
                 src={"http://127.0.0.1:8000/" + product.image}
