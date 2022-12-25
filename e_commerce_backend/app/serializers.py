@@ -99,6 +99,8 @@ class WishlistSerializer(serializers.ModelSerializer):
 
 
 class CartSerializer(serializers.ModelSerializer):
+    productName = serializers.CharField(source="product.name", read_only=True)
+    userName = serializers.CharField(source="user.username", read_only=True)
     class Meta:
         model = Cart
         fields ="__all__"
