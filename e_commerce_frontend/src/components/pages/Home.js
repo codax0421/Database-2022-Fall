@@ -13,6 +13,7 @@ const Home = () => {
   const [category, setCategory] = useState([]);
   const [SearchTagValue, setSearchTagValue] = useState([]);
   const [SearchCategoryValue, setSearchCategoryValue] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
   const { profile } = useContext(AuthContext);
   console.log(profile);
   useEffect(() => {
@@ -33,9 +34,19 @@ const Home = () => {
       console.log(res.data.data);
     };
 
+    const getWish = async () => {
+      if (profile.id !== undefined) {
+        console.log("a user");
+        let res = await axios.get("wishlist/" + profile.id);
+        console.log(res.data.data);
+        setWishlist(res.data.data);
+      }
+    };
+
     getProduct();
     getTag();
     getCat();
+    getWish();
   }, []);
 
   const CategoryTagSearch = async () => {

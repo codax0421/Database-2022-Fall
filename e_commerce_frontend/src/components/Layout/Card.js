@@ -1,6 +1,10 @@
 import React, { useContext } from "react";
 import { Card } from "antd";
-import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import {
+  HeartOutlined,
+  ShoppingCartOutlined,
+  HeartFilled,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import axios from "../../axios";
 import AuthContext from "../../AuthProvider";
@@ -60,8 +64,9 @@ const CardProduct = ({ products }) => {
             cover={
               <img
                 style={{
-                  width: "100%",
-                  height: "100%",
+                  width: " 300px",
+                  height: "300px",
+                  objectFit: "contain",
                 }}
                 alt={product.alt}
                 src={"http://127.0.0.1:8000/" + product.image}
