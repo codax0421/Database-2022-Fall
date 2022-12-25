@@ -18,7 +18,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     tag = TagSerializer(read_only=True, many=True)
-    category = CategorySerializer()
+    category = CategorySerializer("")
+    sellerName = serializers.CharField(source="seller.username", read_only=True)
 
     class Meta:
         model = Product
@@ -31,19 +32,35 @@ class ProductSerializer(serializers.ModelSerializer):
             "description",
             "image",
             "tag",
+            "sellerName",
         ]
 
 
 class TransactionSerializer(serializers.ModelSerializer):
+    buyerName = serializers.CharField(source="buyer.username", read_only=True)
+    sellerName = serializers.CharField(source="seller.username", read_only=True)
+    productName = serializers.CharField(source="product.name", read_only=True)
+
     class Meta:
         model = Transaction
-        fields = ["id", "buyer", "seller", "product", "date"]
+        fields = [
+            "id",
+            "buyer",
+            "seller",
+            "product",
+            "date",
+            "buyerName",
+            "sellerName",
+            "productName",
+        ]
 
 
 class ProductCommentSerializer(serializers.ModelSerializer):
+    buyerName = serializers.CharField(source="buyer.username", read_only=True)
+
     class Meta:
         model = Product_Comment
-        fields = ["id", "buyer", "comment", "rating"]
+        fields = ["id", "buyer", "comment", "rating", "buyerName"]
 
 
 class RegisterSerializer(serializers.ModelSerializer):
