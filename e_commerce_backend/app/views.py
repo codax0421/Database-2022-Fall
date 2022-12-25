@@ -1,29 +1,15 @@
-from django.http import JsonResponse
-from django.shortcuts import render
+from django.db.models import Q
 from knox.auth import AuthToken
 from rest_framework import status
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import (
-    Cart,
-    Category,
-    Product,
-    Product_Comment,
-    Tag,
-    Transaction,
-    User,
-    Wishlist,
-)
-from .serializers import (
-    CategorySerializer,
-    ProductCommentSerializer,
-    ProductSerializer,
-    RegisterSerializer,
-    TagSerializer,
-    TransactionSerializer,
-)
+from .models import (Cart, Category, Product, Product_Comment, Tag,
+                     Transaction, User, Wishlist)
+from .serializers import (CategorySerializer, ProductCommentSerializer,
+                          ProductSerializer, RegisterSerializer, TagSerializer,
+                          TransactionSerializer)
 
 
 @api_view(["GET"])
@@ -206,6 +192,20 @@ def search_by_genres(request):
 
         except Product.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["POST"])
+def search(request):
+    query = request.data["query"]
+    if query:
+        # * Q: django 的查詢語句
+        products = Product.objects.filter(
+            Q(name__icontains=query) | Q(description__icontains=query)
+        )
+        serializer = ProductSerializer(products, many=True)
+        return Response({"products": serializer.data})
+    else:
+        return Response({"products": []})
 
 
 @api_view(["GET"])

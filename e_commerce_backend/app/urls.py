@@ -36,6 +36,7 @@ urlpatterns = [
     path("addcart/", views.add_to_cart),
     path("newcomment/", views.add_comment),
     path("searchByGenres/", views.search_by_genres),
+    path("search/", views.search),
 ]
 
 
