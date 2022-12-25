@@ -91,6 +91,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class WishlistSerializer(serializers.ModelSerializer):
+    productName = serializers.CharField(source="product.name", read_only=True)
+    userName = serializers.CharField(source="user.username", read_only=True)
     class Meta:
         model = Wishlist
         fields ="__all__"
