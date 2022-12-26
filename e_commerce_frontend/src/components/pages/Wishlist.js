@@ -51,7 +51,7 @@ const Wishlist = () => {
                 style={{ display: "flex" }}
               >
                 <CardActionArea
-                  onClick={() => {}}
+                  onClick={() => { }}
                   style={{ flex: 8, display: "flex" }}
                 >
                   <CardMedia
